@@ -20,28 +20,36 @@ export async function createCard(req: Request, res: Response) {
 }
 
 export async function activeCard(req: Request, res: Response){
-  console.log('entrei no active controller')
   const {cvc, password}:{cvc:string,password:string} = req.body
+  
   const card : Card[] = await cardServices.getCardByCvc(cvc)
-
+  
   await cardServices.insertPassword(card[0].id,password)
+
   res.status(201).send('Cartão Ativado')
 }
 
 export async function blockCard(req: Request, res: Response) {
   const {id, password}:{id:number,password:string} = req.body
+
   const toBlock :boolean=true
-  console.log(typeof(toBlock))
+  
   const card : Card = await cardServices.getCardById(id)
-  await cardServices.blockValidations(card,password,toBlock)
+
+  await cardServices.toBlockValidations(card,password,toBlock)
+
   await cardServices.updateBlockCard(id,toBlock)
   res.status(201).send('Cartão Bloqueado.')
 }
 export async function unblockCard(req: Request, res: Response) {
   const {id, password}:{id:number,password:string} = req.body
+
   const toBlock :boolean=false
+
   const card : Card = await cardServices.getCardById(id)
-  await cardServices.blockValidations(card,password,toBlock)
+
+  await cardServices.toBlockValidations(card,password,toBlock)
+
   await cardServices.updateBlockCard(id,toBlock)
   res.status(201).send('Cartão Desbloqueado.')
 }

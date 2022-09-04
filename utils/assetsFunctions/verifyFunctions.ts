@@ -11,22 +11,22 @@ export function cardVerifications(card:cardRepository.Card){
   verifyCardExpiration(card.expirationDate)
   verifyCardActivation(card.password)
 }
-
 export function verifyCvv(cvv:string){
   console.log('entrei no cvv')
   if(!cvv) throw{code:'Bad Request', message:'CVC não enviado.'}
 }
-
 export function verifyCardActivation(password: string|undefined){
   if(password) throw{code:'Bad Request', message:'Cartão já ativado.'}
 }
 export function verifyCardExpiration(expirationDate:string){
-  console.log('entrei no expire')
   
   const expirationSplited: string[] = expirationDate.split("/")
-  const expirationString: string = `30/${expirationSplited[0]}/20${expirationSplited[1]}`
-  const expiration : number = Date.parse(expirationString);
+  const expirationString: string = `20${expirationSplited[1]}-${expirationSplited[0]}-30`
+  const newExpirationDate:Date = new Date(expirationString)
+  const expiration : number = Date.parse(`${newExpirationDate}`);
   const today : number = Date.now()
+  console.log(expirationString)
+  console.log(today)
   if(today>expiration){
     throw{code:'Bad Request', message:'Cartão Expirado.'}
   } 
@@ -40,7 +40,7 @@ export function compareData(data1:any,data2:any,erroCode?:string,message?:string
     throw { code: erroCode, message:message?message:undefined}
   }
 }
-export function verifyPassword(cardPassword:string,insertedPassword:string){
+export function verifyPassword(cardPassword:string,insertedPassword:string|undefined){
   const decryptedPassword = cryptData.decryptString(cardPassword)
   compareData(decryptedPassword,insertedPassword,'Unauthorized','Senha inválida');
   

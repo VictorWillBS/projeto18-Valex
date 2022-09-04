@@ -30,7 +30,7 @@ export async function createCardData(cardholderName:string,employeeCardData:{emp
     password: null,
     isVirtual:false,
     originalCardId: null,
-    isBlocked:false,
+    isBlocked:true,
     type:employeeCardData.type,
   }  ;
   return cardData
@@ -66,10 +66,11 @@ export async function insertPassword(id:number,password:string){
   verifyFunctions.verifyPasswordFormat(password);
   const passwordEncrypted: string= cryptData.encryptString(password) ;
   await cardRepository.update(id,{password:passwordEncrypted});
+  await cardRepository.update(id,{isBlocked:false})
 
 }
 
-export async function blockValidations(cardData: cardRepository.Card,password:string ,toBlock:boolean) {
+export async function toBlockValidations(cardData: cardRepository.Card,password:string ,toBlock:boolean) {
   console.log('entrei na valid')
   if(cardData.password){
     verifyFunctions.verifyPassword(cardData.password,password)
