@@ -4,7 +4,7 @@ function discoverStatusCode(errorcode:string):any{
   {code:'Unauthorized',statusCode:401},
   {code:'Not Found',statusCode:404},
   {code:'Forbidden', statusCode:403},
-  {code:'Conflited',statusCode:409},
+  {code:'Conflict',statusCode:409},
   {code:'Unprocessable Entity',statusCode:422}];
   const codeDiscoverd : {code:string,statusCode:number}[]= codes.filter((element)=>element.code === errorcode );
   return codeDiscoverd[0].statusCode

@@ -4,6 +4,7 @@ import 'express-async-errors'
 import express,{json} from 'express';
 import cardRoute from './routes/cardRoute';
 import rechargeRoute from './routes/rechargeRoute';
+import paymentRoute from './routes/paymentRoute';
 import errorHandle from '../utils/errorFunctions/errorHandle';
 dotenv.config();
 const app = express();
@@ -11,7 +12,8 @@ const app = express();
 app.use(cors());
 app.use(json());
 app.use(cardRoute);
-app.use(rechargeRoute)
+app.use(rechargeRoute);
+app.use(paymentRoute);
 app.use(errorHandle);
 
 const PORT = process.env.PORT;

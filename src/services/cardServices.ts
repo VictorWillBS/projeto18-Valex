@@ -11,7 +11,7 @@ export async function validEmployeeAbletoCard(employeeCardData:{employeeId:numbe
   const {employeeId,type}=employeeCardData
   const card = await cardRepository.findByTypeAndEmployeeId (type,employeeId)
   if(card){
-    throw{code:'Conflited', message: 'Tipo de Cartão já existente.'}
+    throw{code:'Conflict', message: 'Tipo de Cartão já existente.'}
   }
 }
 
@@ -55,7 +55,6 @@ export async function getCardByCvc(cvv:string) {
   if(!cardFounded.length){
     throw {code:'Not Found',message:'Cartão não encontrado.'};
   }
-  console.log(cardFounded)
   verifyFunctions.cardVerifications(cardFounded[0])
 
   return cardFounded
@@ -70,12 +69,7 @@ export async function insertPassword(id:number,password:string){
 
 }
 
-export async function toBlockValidations(cardData: cardRepository.Card,password:string ,toBlock:boolean) {
-  console.log('entrei na valid')
-  if(cardData.password){
-    verifyFunctions.verifyPassword(cardData.password,password)
-  }
-  verifyFunctions.verifyCardExpiration(cardData.expirationDate)
+export async function toBlockValidations(cardData: cardRepository.Card,password:string ,toBlock:boolean) {  
   if(cardData.isBlocked===toBlock){
     const state = toBlock?'bloqueado':'desbloqueado'
     throw{code:'Bad Request', message:`Cartão já ${state}.`}
@@ -84,7 +78,6 @@ export async function toBlockValidations(cardData: cardRepository.Card,password:
 
 
 export async function getCardById(id:number){
-  console.log('busquei o cartao')
   const card:cardRepository.Card = await cardRepository.findById(id)
   if(!card){
     throw{code:'Not Found', message:'Cartão Inexistente.'}
@@ -93,6 +86,5 @@ export async function getCardById(id:number){
 }
 
 export async function updateBlockCard(cardId:number,toBlock:boolean) {
-  console.log('atualizei o banco')
   await cardRepository.update(cardId,{isBlocked:toBlock})
 }

@@ -10,7 +10,7 @@ export async function rechargeCard(req:Request,res:Response){
   const body:{cardId:number, amount:number}= req.body
   const card:Card = await cardServices.getCardById(body.cardId)
   
-  rechargeService.toRechargeValidations(card)
+  rechargeService.verifyActiveAndExpiration(card)
   await rechargeService.insertRecharge(body)
   res.status(200).send('Recarga concluída')
 }
