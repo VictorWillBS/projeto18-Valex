@@ -20,9 +20,13 @@ Retorno: statuscode:201, send: Cartão Criado.
 
 Possíveis Erros:
 403: Acesso negado, chave de acesso requerida nessa rota.
+
 401: Chave de acesso não encontrada em nenhum usuário no banco de dados.
+
 404: Funcionário Não Encontrado.
+
 409: Funcionário Já Tem Um Cartão do Mesmo Tipo Cadastrado. 
+
 422: Algum dado não enviado na requisição ou enviado fora da formatação Informada.
 
 
