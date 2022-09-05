@@ -3,7 +3,6 @@ API Documentation
 ROUTES:
 
 Para criar o cartão:
-
 Método: post
 
 Rota:"/card/create";
@@ -24,14 +23,17 @@ Retorno: statuscode:201, send: Cartão Criado.
 
 Possíveis Erros:
 403: Acesso negado, chave de acesso requerida nessa rota.
+
 401: Chave de acesso não encontrada em nenhum usuário no banco de dados.
+
 404: Funcionário Não Encontrado.
+
 409: Funcionário Já Tem Um Cartão do Mesmo Tipo Cadastrado. 
+
 422: Algum dado não enviado na requisição ou enviado fora da formatação Informada.
 
 
 Para ativar o cartão:
-
 Método: post
 
 Rota:"/card/active"
@@ -58,7 +60,6 @@ Possíveis Erros:
 
 
 Para Receber o Saldo e Transações:
-
 Método: get
 
 Rota: "/card/balance/:cardId"
@@ -110,7 +111,6 @@ Possíveis Erros:
 
 
 Para Bloquear o Cartão: 
-
 Metodo: Post
 
 Rota:"/card/block"
@@ -138,7 +138,6 @@ Possíveis Erros:
 
 
 Para Desbloquear o Cartão: 
-
 Metodo: Post
 
 Rota:"/card/unblock"
@@ -167,7 +166,6 @@ Possíveis Erros:
 
 
 Para Recarregar o Cartão:
-
 Metodo: Post;
 
 Rota:"/recharge";
@@ -197,7 +195,6 @@ Retona: statuscode: 201, send : Cartão Carregado
 
 
 Para Efetuar Pagamento com o Cartão:
-
 Metodo: Post;
 
 Rota:"/payment";
