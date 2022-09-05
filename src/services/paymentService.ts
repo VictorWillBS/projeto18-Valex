@@ -6,9 +6,9 @@ import * as verifyFunctions from "../../utils/assetsFunctions/verifyFunctions";
 export async function verifyBalance(paymentData:{cardId:number, amount:number}){
   const totalPayment : paymentRepository.SumPayment = await paymentRepository.getSumPayments(paymentData.cardId)
   const totalRecharges:rechargeRepository.SumRecharge = await rechargeRepository.getSumRecharges(paymentData.cardId)
-
+  console.log(totalRecharges)
   if(!totalRecharges){
-    throw {code:'Bad Request', message:'Saldo Insuficiente.'}
+    throw {code:'Bad Request', message:'Cartão Não Recarregado.'}
   }
 
   const balance = totalRecharges.amount-totalPayment.amount
@@ -26,7 +26,7 @@ export async function verifySecuritData(cardData:Card,password:string) {
   verifyFunctions.verifyCardExpiration(cardData.expirationDate)
   const isActive = verifyFunctions.verifyCardActivation(cardData.password)
   if(!isActive){
-    throw {code:'Bad Request', message: 'Cartão nNão Ativado'}
+    throw {code:'Bad Request', message: 'Cartão Não Ativado'}
   }
   verifyFunctions.verifyIsBlocked(cardData.isBlocked)
   verifyFunctions.verifyPassword(cardData.password,password)

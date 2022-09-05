@@ -19,6 +19,7 @@ export function verifyCvv(cvv:string){
   if(!cvv) throw{code:'Bad Request', message:'CVC não enviado.'}
 }
 export function verifyCardActivation(password: string|undefined){
+
   if(password) {
     return true
   }
