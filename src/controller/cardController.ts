@@ -41,6 +41,7 @@ export async function blockCard(req: Request, res: Response) {
   await cardServices.updateBlockCard(id,toBlock)
   res.status(201).send('Cartão Bloqueado.')
 }
+
 export async function unblockCard(req: Request, res: Response) {
   const {id, password}:{id:number,password:string} = req.body
 
@@ -54,3 +55,9 @@ export async function unblockCard(req: Request, res: Response) {
   res.status(201).send('Cartão Desbloqueado.')
 }
 
+export async function getBalanceAndTransanctions(req: Request, res: Response) {
+  const cardId:number = parseInt(req.params.cardId);
+  await cardServices.getCardById(cardId)
+  const balanceAndTranctions:{} = await cardServices.getBalanceAndTransanctions(cardId)
+  res.status(200).send(balanceAndTranctions)
+}

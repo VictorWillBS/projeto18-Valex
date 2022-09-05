@@ -1,5 +1,7 @@
 import * as cryptData from "../../utils/assetsFunctions/cryptData";
 import * as cardRepository from "../repositories/cardRepository";
+import * as paymentRepository from "../repositories/paymentRepository"
+import * as rechargesRepository from "../repositories/rechargeRepository"
 import * as fakeCreditCard from "../../utils/fakerFunctions/fakerCreditCard";
 import * as verifyFunctions from "../../utils/assetsFunctions/verifyFunctions";
 import createDateExpiration from "../../utils/assetsFunctions/createDateExpiration";
@@ -76,7 +78,6 @@ export async function toBlockValidations(cardData: cardRepository.Card,password:
   }
 }
 
-
 export async function getCardById(id:number){
   const card:cardRepository.Card = await cardRepository.findById(id)
   if(!card){
@@ -87,4 +88,30 @@ export async function getCardById(id:number){
 
 export async function updateBlockCard(cardId:number,toBlock:boolean) {
   await cardRepository.update(cardId,{isBlocked:toBlock})
+}
+
+export async function getBalance(payments : paymentRepository.SumPayment[],recharges : rechargesRepository.SumRecharge[]) {
+
+  const totalPayments :number=  calcTotalAmount(payments)
+  const totalRecharges:number = calcTotalAmount(recharges)
+  const balance :number = totalRecharges-totalPayments
+  return balance
+}
+
+function calcTotalAmount( list : any):number{
+  let totalAmount:number = 0
+  list.map((element:any)=> totalAmount+=element.amount)
+  return totalAmount
+}
+
+export async function getBalanceAndTransanctions(id:number) {
+  const payments : paymentRepository.SumPayment[] = await paymentRepository.findByCardId(id)
+  const recharges : rechargesRepository.SumRecharge[]= await rechargesRepository.findByCardId(id)
+  const balance = await getBalance(payments,recharges)
+  const result = {
+    balance,
+    transactions:payments,
+    recharges
+  }
+  return result
 }
