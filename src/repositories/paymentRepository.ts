@@ -34,7 +34,7 @@ export async function getSumPayments(cardId: number) {
     `
     SELECT 
 		"cardId",
-     	sum(amount)
+     	sum(amount) as amount
      FROM payments 
       JOIN businesses ON businesses.id=payments."businessId"
 	 WHERE "cardId"=$1

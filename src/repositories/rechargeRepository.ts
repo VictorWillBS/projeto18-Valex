@@ -23,7 +23,7 @@ export async function findByCardId(cardId: number) {
 
 export async function getSumRecharges(cardId: number) {
   const result = await connection.query<SumRecharge, [number]>(
-    `SELECT "cardId", sum(amount) 
+    `SELECT "cardId", sum(amount) as amount
       FROM recharges 
       WHERE "cardId"=$1
       GROUP BY "cardId"`,

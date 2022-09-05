@@ -3,7 +3,7 @@ import * as cryptData from "./cryptData"
 
 export function verifyPasswordFormat(password:string){
   const regex = /^[0-9]{4}$/
-  if(!regex.test(password)){
+  if(!regex.test(password)|| typeof(password)!= 'string'){
     throw {code:'Unprocessable Entity', message:'Formato da Senha Incorreto.'}
   }
 }
@@ -44,9 +44,10 @@ export function compareData(data1:any,data2:any,erroCode?:string,message?:string
   }
 }
 export function verifyPassword(cardPassword:string|undefined,insertedPassword:string|undefined){
-  const decryptedPassword = cryptData.decryptString(cardPassword)
-  compareData(decryptedPassword,insertedPassword,'Unauthorized','Senha inválida');
-  
+  const isSame:boolean = cryptData.compareEncryptData(cardPassword,insertedPassword)
+  if(!isSame){
+    throw{code:'Unauthorized', message:"Senha Inválida."}
+  }
 }
 
 export function verifyIsBlocked(cardIsBlocked:boolean){

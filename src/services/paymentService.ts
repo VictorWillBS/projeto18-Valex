@@ -12,6 +12,7 @@ export async function verifyBalance(paymentData:{cardId:number, amount:number}){
   }
 
   const balance = totalRecharges.amount-totalPayment.amount
+  
   if(balance<=0||balance<paymentData.amount){
     throw {code:'Bad Request', message:'Saldo Insuficiente.'}
   }
@@ -40,9 +41,9 @@ export function verifyBusinessTransition(business : businessRepository.Business,
     throw {code:'Not Found', message:'Estabelecimento Não Encontrado'}
   }else 
   if(business.type !=businessType){
-    throw {code:'Conflict', message:'Tipo de Estabelicimento Conflitante Com o Estado Atual'}
+    throw {code:'Conflict', message:'Tipo de Estabelicimento Conflitante Com o Enviado na Requisão.'}
   }else 
   if(business.type!=cardData.type){
-    throw {code:'Unauthorized', message:'Tipo de Catão Não Aceito Nesse Estabelecimento'}
+    throw {code:'Unauthorized', message:'Tipo de Cartão Não Aceito Neste Estabelecimento'}
   }
 }

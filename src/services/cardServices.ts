@@ -6,7 +6,7 @@ import * as fakeCreditCard from "../../utils/fakerFunctions/fakerCreditCard";
 import * as verifyFunctions from "../../utils/assetsFunctions/verifyFunctions";
 import createDateExpiration from "../../utils/assetsFunctions/createDateExpiration";
 import formatCreditCardName from "../../utils/assetsFunctions/formatCreditCardName";
-import { number } from "joi";
+
 
 
 export async function validEmployeeAbletoCard(employeeCardData:{employeeId:number,type:string}) {
@@ -65,13 +65,17 @@ export async function getCardByCvc(cvv:string) {
 export async function insertPassword(id:number,password:string){
  
   verifyFunctions.verifyPasswordFormat(password);
-  const passwordEncrypted: string= cryptData.encryptString(password) ;
+  const passwordEncrypted: string= cryptData.encryptStringByHash(password) ;
   await cardRepository.update(id,{password:passwordEncrypted});
   await cardRepository.update(id,{isBlocked:false})
 
 }
 
 export async function toBlockValidations(cardData: cardRepository.Card,password:string ,toBlock:boolean) {  
+  verifyFunctions.verifyCardExpiration(cardData.expirationDate)
+  if(cardData.password){
+  verifyFunctions.verifyPassword(cardData.password,password)
+}
   if(cardData.isBlocked===toBlock){
     const state = toBlock?'bloqueado':'desbloqueado'
     throw{code:'Bad Request', message:`Cartão já ${state}.`}

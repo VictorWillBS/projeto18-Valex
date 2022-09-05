@@ -9,5 +9,5 @@ export async function doPayment(req: Request, res: Response) {
   await paymentService.verifyTransation(card,body.businessId,body.businessType)
   await paymentService.verifyBalance(body)
   await paymentService.insertPayment(body.cardId,body.businessId,body.amount)
-  res.status(200).send()
+  res.status(200).send('Pagamento Concluído Com Sucesso.')
 }
